@@ -1,0 +1,26 @@
+modLoader = "javafml"
+loaderVersion = "[4,)"
+license = "MIT"
+
+[[mods]]
+modId = "${mod_id}"
+version = "${mod_version}"
+displayName = "${mod_name}"
+authors = "${mod_authors}"
+description = '''${mod_description}'''
+
+[[dependencies.${mod_id}]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21.1,)"
+ordering = "NONE"
+side = "BOTH"
+
+# Tensura als Abhängigkeit erst eintragen, wenn die modId aus der Tensura-Jar
+# (META-INF/neoforge.mods.toml) bestätigt ist:
+# [[dependencies.${mod_id}]]
+# modId = "tensura"
+# type = "required"
+# versionRange = "[2.0,)"
+# ordering = "AFTER"
+# side = "BOTH"
