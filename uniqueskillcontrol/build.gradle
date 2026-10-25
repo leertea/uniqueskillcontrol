@@ -1,0 +1,62 @@
+plugins {
+    id 'java-library'
+    id 'net.neoforged.moddev' version '2.0.78'
+}
+
+version = mod_version
+group = mod_group_id
+
+base {
+    archivesName = mod_id
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+neoForge {
+    version = neo_version
+
+    runs {
+        client {
+            client()
+        }
+        server {
+            server()
+            programArguments.add('--nogui')
+        }
+    }
+
+    mods {
+        "${mod_id}" {
+            sourceSet sourceSets.main
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+    // Lege die .jar-Dateien von Tensura, ManasCore und Great Sage in den Ordner "libs/",
+    // dann kann der Mod dagegen kompilieren.
+    flatDir { dirs 'libs' }
+}
+
+dependencies {
+    // Sobald die Jars in libs/ liegen, die Zeilen aktivieren (Dateinamen ohne .jar):
+    // compileOnly name: 'tensura-reincarnated-1.21.1-2.0.1.3'
+    // compileOnly name: 'manascore-neoforge-1.21.1-x.y.z'
+    // compileOnly name: 'great-sage-1.21.1-x.y.z'
+}
+
+tasks.withType(ProcessResources).configureEach {
+    var props = [
+        mod_id         : mod_id,
+        mod_name       : mod_name,
+        mod_version    : mod_version,
+        mod_authors    : mod_authors,
+        mod_description: mod_description,
+        neo_version    : neo_version
+    ]
+    inputs.properties props
+    filesMatching('META-INF/neoforge.mods.toml') {
+        expand props
+    }
+}
